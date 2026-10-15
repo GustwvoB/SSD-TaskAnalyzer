@@ -1,3 +1,4 @@
+"""BLOCO A (cabeçalho, cenário 1 e cenário 2)"""
 """Test Harness do TaskAnalyzer.
 
 Traduz os cenarios de aceite da especificacao SDD em testes automatizados.
@@ -92,3 +93,35 @@ def test_cenario_2_data_conclusao_anterior_a_criacao() -> None:
 
     with pytest.raises(TaskValidationError):
         analyze_tasks(tarefas)
+
+
+
+"""BLOCO B (casos de borda)"""
+def test_borda_lista_vazia() -> None:
+    """Borda: lista vazia retorna zeros, sem lancar excecao."""
+    resultado = analyze_tasks([])
+
+    assert resultado["total_tarefas"] == 0
+    assert resultado["total_concluidas"] == 0
+    assert resultado["total_pendentes"] == 0
+    assert resultado["tempo_medio_conclusao_horas"] == 0.0
+    assert resultado["taxa_atraso_percentual"] == 0.0
+
+
+def test_borda_apenas_pendentes() -> None:
+    """Borda: so tarefas pendentes retornam medias 0.0, sem excecao."""
+    tarefas = [
+        criar_tarefa(1, "alta", "pendente", utc(1, 8), utc(1, 18)),
+        criar_tarefa(2, "baixa", "pendente", utc(1, 9), utc(1, 20)),
+    ]
+
+    resultado = analyze_tasks(tarefas)
+
+    assert resultado["total_tarefas"] == 2
+    assert resultado["total_concluidas"] == 0
+    assert resultado["total_pendentes"] == 2
+    assert resultado["tempo_medio_conclusao_horas"] == 0.0
+    assert resultado["taxa_atraso_percentual"] == 0.0
+
+    por_prioridade = resultado["tempo_medio_conclusao_por_prioridade_horas"]
+    assert all(valor == 0.0 for valor in por_prioridade.values())
