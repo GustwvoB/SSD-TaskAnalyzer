@@ -112,7 +112,3 @@ Os detalhes completos estão em `specs/task_analyzer_spec.md`.
 
 - Todas as datas precisam ter fuso horário (UTC). Misturar datas com e sem fuso gera um `TypeError` do próprio Python, porque a especificação ainda não define esse caso.
 - O módulo é *stateless*: não salva nada em arquivo nem em banco de dados.
-
-## Autor
-
-Gustavo Barbosa Oliveira, Análise e Desenvolvimento de Sistemas, UniCEUB (Bootcamp III).
